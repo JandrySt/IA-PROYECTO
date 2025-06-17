@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>App Biométrica con Dashboard Inteligente</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <img src="/static/images/LGIA.png" alt="Logo NexFace" class="logo">
+    </div>
+    <h1></h1>
+  </header>
+  <main>
+    <nav>
+      <button id="nav-register" class="active">Registro</button>
+      <button id="nav-login">Login</button>
+      <button id="nav-dashboard">Dashboard</button>
+      <button id="nav-logout" class="hidden">Cerrar Sesión</button>
+    </nav>
+
+    <!-- Sección de Registro -->
+    <section id="register-section">
+      <form id="register-form">
+        <h2>Registro de Usuario</h2>
+        <input type="text" id="name" placeholder="Nombres" required />
+        <input type="text" id="lastname" placeholder="Apellidos" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="text" id="cedula" placeholder="Cédula" required pattern="[0-9]{6,12}" title="Ingrese un número de cédula válido (6-12 dígitos)" />
+        <input type="password" id="password" placeholder="Contraseña" required minlength="6" />
+        
+        <p>Captura biométrica facial desde varios ángulos (necesitamos 5 imágenes):</p>
+        <div class="video-container">
+          <video id="register-video" autoplay muted playsinline width="320" height="240"></video>
+          <canvas id="register-canvas" width="320" height="240"></canvas>
+        </div>
+        <input type="file" id="face-images" multiple accept="image/*" capture="user" style="display: none;">
+        <button type="button" id="capture-face-btn" onclick="document.getElementById('face-images').click()">Seleccionar imágenes (5 ángulos)</button>
+        <div class="face-captures" id="face-captures-container">
+        <!-- Las miniaturas se agregarán aquí con botones de eliminar -->
+        </div>
+        <button type="submit" id="register-submit-btn" disabled>Registrarse</button>        
+        <p class="message" id="register-msg"></p>
+      </form>
+    </section>
+
+    <!-- Sección de Login -->
+    <section id="login-section" class="hidden">
+      <h2>Login con reconocimiento facial</h2>
+      <div class="video-container">
+        <video id="login-video" autoplay muted playsinline width="320" height="240"></video>
+        <canvas id="login-canvas" width="320" height="240"></canvas>
+      </div>
+      <button id="login-btn" disabled>Iniciar Sesión con Rostro</button>
+      <p class="message" id="login-msg"></p>
+    </section>
+
+    <!-- Dashboard -->
+  <section id="dashboard-section" class="hidden">
+    <div class="user-info">
+      <h2>Bienvenido, <span id="user-name"></span></h2>
+      <p><span id="user-email"></span></p>
+    </div>
+    
+    <div class="dashboard-tabs">
+      <button class="tab-btn active" data-tab="forecast">Pronósticos</button>
+      <button class="tab-btn" data-tab="behavior">Comportamiento</button>
+      <button class="tab-btn" data-tab="biometrics">Biometría</button>
+    </div>
+    
+    <!-- Pestaña de Pronósticos -->
+    <div class="tab-content active" id="forecast-tab">
+      <h2 class="dashboard-header">Dashboard Inteligente - Predicciones</h2>
+      <div class="chart-container">
+        <canvas id="forecast-chart"></canvas>
+      </div>
+      <button id="speak-feedback-btn">Escuchar Resumen</button>
+    </div>
+    
+    <!-- Pestaña de Comportamiento -->
+    <div class="tab-content" id="behavior-tab">
+      <h2 class="dashboard-header">Análisis de Comportamiento</h2>
+      
+      <div class="grid-container">
+        <div class="chart-card">
+          <h3>Frecuencia de Logins</h3>
+          <div class="chart-container-sm">
+            <canvas id="login-frequency-chart"></canvas>
+          </div>
+        </div>
+        
+        <div class="chart-card">
+          <h3>Horarios de Acceso</h3>
+          <div class="chart-container-sm">
+            <canvas id="login-hours-chart"></canvas>
+          </div>
+        </div>
+        
+        <div class="chart-card">
+          <h3>Uso del Sistema</h3>
+          <div class="chart-container-sm">
+            <canvas id="system-usage-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pestaña de Biometría -->
+    <div class="tab-content" id="biometrics-tab">
+      <h2 class="dashboard-header">Estadísticas Biométricas</h2>
+      
+      <div class="grid-container">
+        <div class="chart-card">
+          <h3>Precisión de Reconocimiento</h3>
+          <div class="chart-container-sm">
+            <canvas id="accuracy-chart"></canvas>
+          </div>
+          <div class="stats-box">
+            <p>Tiempo promedio de autenticación: <span id="avg-auth-time">-</span> segundos</p>
+          </div>
+        </div>
+        
+        <div class="chart-card">
+          <h3>Distribución de Similitud Facial</h3>
+          <div class="chart-container-sm">
+            <canvas id="similarity-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <p class="message" id="dashboard-msg"></p>
+  </section>
+  </main>
+  <footer>
+    © 2024 Aplicación Biométrica - Proyecto IA
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/static/js/app.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-histogram@latest/dist/chartjs-plugin-histogram.min.js"></script>
+</body>
+</html>
